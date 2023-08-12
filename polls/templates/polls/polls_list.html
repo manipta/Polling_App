@@ -45,10 +45,10 @@
                     {% if request.user == poll.owner %}
                     {% if poll.active %}
                     <a href="{% url 'polls:end_poll' poll.id %}" data-toggle="tooltip" data-placement="top" title="End Poll"
-                        onclick="return confirm('Are you sure ?')"><i class="fas fa-step-forward float-right btn btn-danger btn-sm"></i></a>
+                        onclick="return confirm('Are you sure to end the Poll?')"><i class="fas fa-step-forward float-right btn btn-primary btn-sm"></i></a>
                     {% endif %}
-                    <a href="{% url 'polls:edit' poll.id %}" class="mr-3" data-toggle="tooltip" data-placement="top"
-                        title="Edit Poll"><i class="fas fa-pencil-alt float-right btn btn-primary btn-sm mr-1"></i></a>
+                    <a href="{% url 'polls:delete_poll' poll.id %}" data-toggle="tooltip" data-placement="top"
+                    onclick="return confirm('Are you sure that You want to delete the Poll?')" title="Delete Poll"><i class="fas fa-trash float-right btn btn-danger btn-sm mr-2"></i></a>
                     {% endif %}
                 </li>
 
