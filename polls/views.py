@@ -86,7 +86,7 @@ def polls_add(request):
         }
         return render(request, 'polls/add_poll.html', context)
     # else:
-        return HttpResponse("Sorry but you don't have permission to do that!")
+        # return HttpResponse("Sorry but you don't have permission to do that!")
 
 
 @login_required
@@ -150,7 +150,7 @@ def choice_edit(request, choice_id):
     if request.user != poll.owner:
         return redirect('home')
 
-    if request.method == 'POST':
+    if request.method == 'POST':    
         form = ChoiceAddForm(request.POST, instance=choice)
         if form.is_valid:
             new_choice = form.save(commit=False)

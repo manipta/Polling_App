@@ -46,6 +46,7 @@
 
     function createChoiceInput(index) {
         const choiceContainer = document.createElement('div');
+        choiceContainer.id = `choice-${index}`;
         choiceContainer.classList.add('form-group', 'mb-3'); // Add Bootstrap classes
 
         const label = document.createElement('label');
@@ -85,6 +86,7 @@
         const choiceContainer = document.querySelector(`#choice-${index}`);
         if (choiceContainer) {
             choiceContainer.remove();
+            // choiceCount--;
         }
     }
 </script>
