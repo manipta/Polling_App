@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row center">
+        <div class="col-md-6 offset-md-3">
+            <h2>Create new poll</h2>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <div id="choices-div">
+                    {% for choice in form.choices %}
+                    <div class="form-group mb-3" id="choice-{{ forloop.counter }}">
+                        <label>Choice {{ forloop.counter }}:</label>
+                        <input type="text" name="choice{{ forloop.counter }}" value="{{ choice.choice_text }}" required class="form-control">
+                        <button type="button" class="btn btn-danger" onclick="deleteChoice('{{ forloop.counter }}')">Delete Choice</button>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <button type="button" id="add-choice-btn" class="btn btn-success">Add Choice</button>
+                <button type="submit" class="btn btn-primary">Add Poll</button>
+                <a class="btn btn-warning" href="{% url 'polls:list' %}" role="button">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const addChoiceBtn = document.getElementById('add-choice-btn');
+    const choicesDiv = document.getElementById('choices-div');
+    let choiceCount = 3;  // Start with the number of existing choices
+
+    function createChoiceInput(index) {
+        const choiceContainer = document.createElement('div');
+        choiceContainer.classList.add('form-group', 'mb-3'); // Add Bootstrap classes
+
+        const label = document.createElement('label');
+        label.textContent = `Choice ${index}:`;
+        choiceContainer.appendChild(label);
+
+        const choiceInput = document.createElement('input');
+        choiceInput.type = 'text';
+        choiceInput.name = `choice${index}`;
+        // choiceInput.placeholder = `Choice ${index}`;
+        choiceInput.required = true;
+        choiceInput.classList.add('form-control'); // Add Bootstrap class
+        choiceContainer.appendChild(choiceInput);
+
+        const deleteChoiceBtn = createDeleteButton(index);
+        choiceContainer.appendChild(deleteChoiceBtn);
+
+        return choiceContainer;
+    }
+
+    addChoiceBtn.addEventListener('click', () => {
+        const newChoiceContainer = createChoiceInput(choiceCount);
+        choicesDiv.appendChild(newChoiceContainer);
+        choiceCount++;
+    });
+
+    function createDeleteButton(index) {
+        const deleteChoiceBtn = document.createElement('button');
+        deleteChoiceBtn.type = 'button';
+        deleteChoiceBtn.classList.add('btn', 'btn-danger');
+        deleteChoiceBtn.textContent = 'Delete Choice';
+        deleteChoiceBtn.addEventListener('click', () => deleteChoice(index));
+        return deleteChoiceBtn;
+    }
+
+    function deleteChoice(index) {
+        const choiceContainer = document.querySelector(`#choice-${index}`);
+        if (choiceContainer) {
+            choiceContainer.remove();
+        }
+    }
+</script>
+
+
+{% endblock %}
