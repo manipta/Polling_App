@@ -43,14 +43,15 @@
     const addChoiceBtn = document.getElementById('add-choice-btn');
     const choicesDiv = document.getElementById('choices-div');
     let choiceCount = 3;  // Start with the number of existing choices
-
+    let choicetracker=3;
     function createChoiceInput(index) {
         const choiceContainer = document.createElement('div');
         choiceContainer.id = `choice-${index}`;
         choiceContainer.classList.add('form-group', 'mb-3'); // Add Bootstrap classes
 
         const label = document.createElement('label');
-        label.textContent = `Choice ${index}:`;
+        label.textContent = `Enter your Choice :`;
+        label.id=`Choice-${index}`;
         choiceContainer.appendChild(label);
 
         const choiceInput = document.createElement('input');
@@ -71,6 +72,7 @@
         const newChoiceContainer = createChoiceInput(choiceCount);
         choicesDiv.appendChild(newChoiceContainer);
         choiceCount++;
+        choicetracker++;
     });
 
     function createDeleteButton(index) {
@@ -86,7 +88,7 @@
         const choiceContainer = document.querySelector(`#choice-${index}`);
         if (choiceContainer) {
             choiceContainer.remove();
-            // choiceCount--;
+            choicetracker--;
         }
     }
 </script>

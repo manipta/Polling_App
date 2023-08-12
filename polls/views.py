@@ -71,12 +71,6 @@ def polls_add(request):
                         new_choice = Choice(poll=poll, choice_text=choice_text)
                         new_choice.save()
 
-                delete_choice_indices = [int(key.split('-')[-1]) for key in request.POST if key.startswith('delete-choice-')]
-                for choice_index in delete_choice_indices:
-                    choice = Choice.objects.filter(poll=poll, id=choice_index).first()
-                    if choice:
-                        choice.delete()
-
                 messages.success(request, "Poll & Choices added successfully.", extra_tags='alert alert-success alert-dismissible fade show')
                 return redirect('polls:list')
         else:
