@@ -12,18 +12,31 @@ from django.http import HttpResponse
 def polls_list(request):
     all_polls = Poll.objects.all()
     search_term = ''
-    order_by = request.GET.get('name', None)  # Get the value of 'name' parameter
+    current_sort = ''
 
-    if order_by == 'asc':
-        all_polls = all_polls.order_by('text')
-    elif order_by == 'desc':
-        all_polls = all_polls.order_by('-text')
+    if 'name' in request.GET:
+        if 'current_sort' in request.GET and request.GET['current_sort'] == 'asc':
+            all_polls = all_polls.order_by('text')
+            current_sort = 'desc'
+        else:
+            all_polls = all_polls.order_by('-text')
+            current_sort = 'asc'
 
     if 'date' in request.GET:
-        all_polls = all_polls.order_by('pub_date')
+        if 'current_sort' in request.GET and request.GET['current_sort'] == 'asc':
+            all_polls = all_polls.order_by('pub_date')
+            current_sort = 'desc'
+        else:
+            all_polls = all_polls.order_by('-pub_date')
+            current_sort = 'asc'
 
     if 'vote' in request.GET:
-        all_polls = all_polls.annotate(Count('vote')).order_by('vote__count')
+        if 'current_sort' in request.GET and request.GET['current_sort'] == 'asc':
+            all_polls = all_polls.annotate(Count('vote')).order_by('vote__count')
+            current_sort = 'desc'
+        else:
+            all_polls = all_polls.annotate(Count('vote')).order_by('-vote__count')
+            current_sort = 'asc'
 
     if 'search' in request.GET:
         search_term = request.GET['search']
@@ -40,9 +53,9 @@ def polls_list(request):
         'polls': polls,
         'params': params,
         'search_term': search_term,
+        'current_sort': current_sort,
     }
     return render(request, 'polls/polls_list.html', context)
-
 
 @login_required()
 def list_by_user(request):
