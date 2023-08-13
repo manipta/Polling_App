@@ -78,7 +78,7 @@
     function createDeleteButton(index) {
         const deleteChoiceBtn = document.createElement('button');
         deleteChoiceBtn.type = 'button';
-        deleteChoiceBtn.classList.add('btn', 'btn-danger');
+        deleteChoiceBtn.classList.add('btn', 'btn-danger','mt-2');
         deleteChoiceBtn.textContent = 'Delete Choice';
         deleteChoiceBtn.addEventListener('click', () => deleteChoice(index));
         return deleteChoiceBtn;
