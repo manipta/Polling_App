@@ -12,8 +12,12 @@ from django.http import HttpResponse
 def polls_list(request):
     all_polls = Poll.objects.all()
     search_term = ''
-    if 'name' in request.GET:
+    order_by = request.GET.get('name', None)  # Get the value of 'name' parameter
+
+    if order_by == 'asc':
         all_polls = all_polls.order_by('text')
+    elif order_by == 'desc':
+        all_polls = all_polls.order_by('-text')
 
     if 'date' in request.GET:
         all_polls = all_polls.order_by('pub_date')

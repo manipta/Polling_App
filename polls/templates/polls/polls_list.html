@@ -17,13 +17,18 @@
             </div>
             {% endif %}
 
-            <a class="btn btn-{% if 'name' in request.GET %}warning{% else %}primary{% endif %} mb-3" href="?name=True"
-                role="button"><i class="fas fa-sort-alpha-down"></i>
-                Name</a>
+            <a id="sort-name-btn" class="btn btn-{% if 'name' in request.GET %}warning{% else %}primary{% endif %} mb-3"
+            href="?name=asc" role="button"><i class="fas fa-sort-alpha-down"></i>
+            Name</a>
+
+
+        
             <a class="btn btn-{% if 'date' in request.GET %}warning{% else %}primary{% endif %} mb-3" href="?date=True"
                 role="button"><i class="far fa-clock"></i> Date</a>
             <a class="btn btn-{% if 'vote' in request.GET %}warning{% else %}primary{% endif %} mb-3" href="?vote=True"
                 role="button"><i class="fas fa-poll"></i> Vote</a>
+
+            <a class="btn btn-primary mb-3 float-right" href="{% url 'polls:add' %}" role="button">Add <i class="fas fa-plus"></i></a>
 
             <a class="btn btn-primary mb-3 float-right" href="{% url 'polls:add' %}" role="button">Add <i class="fas fa-plus"></i></a>
 
@@ -69,6 +74,17 @@
                     {% endif %}
                 </ul>
             </nav>
+            <script>
+                const sortNameBtn = document.getElementById('sort-name-btn');
+                let sortOrder = 'asc'; // Initial sorting order
+            
+                sortNameBtn.addEventListener('click', () => {
+                    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                    const currentURL = new URL(window.location.href);
+                    currentURL.searchParams.set('name', sortOrder);
+                    window.location.href = currentURL.href;
+                });
+            </script>
         </div>
     </div>
 </div>
